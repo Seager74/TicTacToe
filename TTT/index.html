@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>TicTacToe</title>
+	<meta charset="utf-8" />
+    <script src="Scripts/jquery-1.6.4.min.js"></script>
+    <script src="Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="signalr/hubs" type="text/javascript"></script>
+    <link href="Site.css" rel="stylesheet" />
+</head>
+<body>
+    <h1><span>Tic Tac Toe</span></h1>
+    <span id="gameInformation"></span>
+    <div>
+        <div id="register">
+            <strong>Your Name:</strong>
+            <input type="text" class="input" id="gameName"/>
+            <br />
+            <input type="button" class="button" id="registerName" value="Register to play" />
+        </div>
+    </div>
+    
+    <div id="findOpponent">
+        <strong>Find some1 to play a game with</strong>
+        <input type="button" class="button findGame" id="findGame" value="Find opponent"/>
+    </div>
+    <div id="waitingForOpponent">We are looking for an opponent for You</div>
+    <div id="game"/>
+    <div class="clear"><input type="button" class="button findGame" id="findAnotherGame" value="Find a new Opponent/"></div>
+
+    <script type="text/javascript">
+        $(function () {
+            var x = new Image();
+            x.src = 'Content/Images/TicTacToeX.png'
+            var o = new Image();
+            o.src = 'Content/Images/TicTacToeO.png'
+
+
+
+            var game = $.connection.game;
+
+            $("#findOpponent").hide();
+            $("#waitingForOpponent").hide();
+            $("#game").hide();
+            $("#noOpponent").hide();
+
+            game.client.registerComplete = function (message) {
+                $("#register").hide();
+                $("#findOpponent").show();
+            };
+            game.client.noOpponent = function () {
+                $("#gameInformation").html("<strong>Looking for an opponent</strong>");
+            }; 
+            game.client.foundOpponent = function (message) {
+                $("#waitingForOpponent").hide();
+                $("#gameInformation").html("You are playing against " + message);
+                $("#game").show();
+                for (var i = 0; i < 9; i++)
+                {
+                    $("#game").append("<span id=" + i + " class='box' />");
+                }
+            };
+
+            game.client.waitingForMarkerPlacement = function (message)
+            {
+                $("#information").html("<strong>You are up</strong>");
+                
+            }
+
+            game.client.addMarkerPlacement = function (message) {
+
+                if (message.OpponentName !== $('#gameName').val()) {
+                    $("#" + message.MarkerPosition).addClass("mark2");
+                    $("#" + message.MarkerPosition).addClass("marked");
+                    $("#gameInformation").html("<strong>You are up!</strong>")
+                }
+                else {
+                    $("#" + message.MarkerPosition).addClass("mark1");
+                    $("#" + message.MarkerPosition).addClass("marked");
+                    $("#gameInformation").html("<strong>Waiting for Opponent`s move!</strong>")
+                }
+
+            };
+
+            game.client.gameOver = function (message)
+            {
+               // $("#gameInformation").html("You are playing against " + message);
+                $("#gameInformation").html('<strong>Game is over and We have a Winner' + message + '</strong>');
+                //$('#debug').append('<li>Game is over and We have a Winner' + message + '</li>');
+                $("findAnotherGame").show();
+            }
+
+            $("#registerName").click(function () {
+                game.server.registerClient($("#gameName").val());
+            });
+            $("#findGame").click(function () {
+                game.server.findOpponent();
+                $("#register").hide();
+                $("#findOpponent").hide();
+                $("#waitingForOpponent").show();
+                //$("#noOpponent").show();
+            });
+
+            $(".box").live("click", function (event) {
+                if ($(this).hasClass("marked")) return;
+
+                game.server.play(event.target.id);
+            });
+
+            $.connection.hub.start();
+        });
+    </script>
+</body>
+</html>

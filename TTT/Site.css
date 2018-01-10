@@ -1,0 +1,69 @@
+﻿h1 {
+
+    display: block;
+    background: url('Content/Images/TicTacToeLogo.png') no-repeat;
+    height: 166px;
+    width: 300px;
+}
+
+    h1 span {
+    
+        display: none;
+
+    }
+
+input.findGame {
+    clear:both;
+}
+
+.clear {
+
+    clear:both;
+
+}
+
+
+span.box {
+    display: block;
+    border: 2px solid pink;
+    height: 80px;
+    width: 80px;
+    float: left;
+    margin: 5px;
+}
+
+div.information {
+clear:both;
+}
+
+div#serverInformation {
+clear:both;
+margin-top:30px;
+font-size:80%;
+font-style:italic;
+}
+
+span#gameInformation {
+font-weight:bold;
+font-size:120%;
+}
+span.mark1 {
+
+    background:url('/Content/Images/TicTacToeX.png') center center no-repeat;
+
+}
+
+span.mark2 {
+
+    background:url('/Content/Images/TicTacToeO.png') center center no-repeat;
+
+}
+
+div#game {
+width:320px;
+}
+
+fieldset {
+margin-top: 100px;
+display:none;
+}
