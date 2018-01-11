@@ -55,6 +55,7 @@
             game.client.foundOpponent = function (message) {
                 $("#waitingForOpponent").hide();
                 $("#gameInformation").html("You are playing against " + message);
+
                 $("#game").show();
                 for (var i = 0; i < 9; i++)
                 {
@@ -62,11 +63,12 @@
                 }
             };
 
-            game.client.waitingForMarkerPlacement = function (message)
-            {
-                $("#information").html("<strong>You are up</strong>");
-                
-            }
+            game.client.waitingForMarkerPlacement = function (message) {
+                $("#gameInformation").html("<strong>You are up</strong>");
+
+            };
+
+
 
             game.client.addMarkerPlacement = function (message) {
 
@@ -83,13 +85,12 @@
 
             };
 
-            game.client.gameOver = function (message)
-            {
-               // $("#gameInformation").html("You are playing against " + message);
-                $("#gameInformation").html('<strong>Game is over and We have a Winner' + message + '</strong>');
+            game.client.gameOver = function (message) {
+                // $("#gameInformation").html("You are playing against " + message);
+                $("#gameInformation").html('<strong>Game is over and We have a Winner ' + message + '</strong>');
                 //$('#debug').append('<li>Game is over and We have a Winner' + message + '</li>');
-                $("findAnotherGame").show();
-            }
+                //$("findAnotherGame").show();
+            };
 
             $("#registerName").click(function () {
                 game.server.registerClient($("#gameName").val());

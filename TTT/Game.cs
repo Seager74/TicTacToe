@@ -105,7 +105,7 @@ namespace TTT
             {
                 marker = 1;
             }
-            var player = marker == 0 ? game.player2 : game.player2;
+            var player = marker == 0 ? game.player1 : game.player2;
 
             if (player.WaitingForMove) return;
 
